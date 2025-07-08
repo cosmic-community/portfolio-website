@@ -69,7 +69,7 @@ export async function getWorkExperience() {
     const response = await cosmic.objects
       .find({ type: 'work-experience' })
       .props(['id', 'title', 'slug', 'metadata'])
-      .sort({ 'metadata.start_date': -1 })
+      .sort('-metadata.start_date')
       .depth(1);
     return response.objects;
   } catch (error) {
