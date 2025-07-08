@@ -5,14 +5,14 @@ interface CosmicObject {
   title: string;
   content?: string;
   metadata: Record<string, any>;
-  type_slug: string;
+  type_slug?: string;
   created_at: string;
   modified_at: string;
 }
 
 // Project interface
 export interface Project extends CosmicObject {
-  type_slug: 'projects';
+  type_slug?: 'projects';
   metadata: {
     project_name?: string;
     description?: string;
@@ -32,7 +32,7 @@ export interface Project extends CosmicObject {
 
 // Skill interface
 export interface Skill extends CosmicObject {
-  type_slug: 'skills';
+  type_slug?: 'skills';
   metadata: {
     skill_name?: string;
     category?: {
@@ -49,7 +49,7 @@ export interface Skill extends CosmicObject {
 
 // Work Experience interface
 export interface WorkExperience extends CosmicObject {
-  type_slug: 'work-experience';
+  type_slug?: 'work-experience';
   metadata: {
     company_name?: string;
     job_title?: string;
@@ -67,7 +67,7 @@ export interface WorkExperience extends CosmicObject {
 
 // Testimonial interface
 export interface Testimonial extends CosmicObject {
-  type_slug: 'testimonials';
+  type_slug?: 'testimonials';
   metadata: {
     client_name?: string;
     client_position?: string;
@@ -93,8 +93,8 @@ export type ProficiencyLevel = 'beginner' | 'intermediate' | 'advanced' | 'exper
 export interface CosmicResponse<T> {
   objects: T[];
   total: number;
-  limit: number;
-  skip: number;
+  limit?: number;
+  skip?: number;
 }
 
 // Type guards for runtime validation

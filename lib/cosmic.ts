@@ -1,4 +1,5 @@
 import { createBucketClient } from '@cosmicjs/sdk';
+import { Project, Skill, WorkExperience, Testimonial } from '@/types';
 
 export const cosmic = createBucketClient({
   bucketSlug: process.env.COSMIC_BUCKET_SLUG as string,
@@ -13,39 +14,41 @@ function hasStatus(error: unknown): error is { status: number } {
 }
 
 // Fetch all projects
-export async function getProjects() {
+export async function getProjects(): Promise<Project[]> {
   try {
     const response = await cosmic.objects
       .find({ type: 'projects' })
       .props(['id', 'title', 'slug', 'metadata'])
       .depth(1);
-    return response.objects;
+    return response.objects as Project[];
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return [];
     }
-    throw new Error('Failed to fetch projects');
+    console.error('Failed to fetch projects:', error);
+    return [];
   }
 }
 
 // Fetch all skills
-export async function getSkills() {
+export async function getSkills(): Promise<Skill[]> {
   try {
     const response = await cosmic.objects
       .find({ type: 'skills' })
       .props(['id', 'title', 'slug', 'metadata'])
       .depth(1);
-    return response.objects;
+    return response.objects as Skill[];
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return [];
     }
-    throw new Error('Failed to fetch skills');
+    console.error('Failed to fetch skills:', error);
+    return [];
   }
 }
 
 // Fetch skills by category
-export async function getSkillsByCategory(category: string) {
+export async function getSkillsByCategory(category: string): Promise<Skill[]> {
   try {
     const response = await cosmic.objects
       .find({ 
@@ -54,50 +57,53 @@ export async function getSkillsByCategory(category: string) {
       })
       .props(['id', 'title', 'slug', 'metadata'])
       .depth(1);
-    return response.objects;
+    return response.objects as Skill[];
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return [];
     }
-    throw new Error('Failed to fetch skills by category');
+    console.error('Failed to fetch skills by category:', error);
+    return [];
   }
 }
 
 // Fetch work experience
-export async function getWorkExperience() {
+export async function getWorkExperience(): Promise<WorkExperience[]> {
   try {
     const response = await cosmic.objects
       .find({ type: 'work-experience' })
       .props(['id', 'title', 'slug', 'metadata'])
       .sort('-metadata.start_date')
       .depth(1);
-    return response.objects;
+    return response.objects as WorkExperience[];
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return [];
     }
-    throw new Error('Failed to fetch work experience');
+    console.error('Failed to fetch work experience:', error);
+    return [];
   }
 }
 
 // Fetch testimonials
-export async function getTestimonials() {
+export async function getTestimonials(): Promise<Testimonial[]> {
   try {
     const response = await cosmic.objects
       .find({ type: 'testimonials' })
       .props(['id', 'title', 'slug', 'metadata'])
       .depth(1);
-    return response.objects;
+    return response.objects as Testimonial[];
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return [];
     }
-    throw new Error('Failed to fetch testimonials');
+    console.error('Failed to fetch testimonials:', error);
+    return [];
   }
 }
 
 // Fetch single project by slug
-export async function getProject(slug: string) {
+export async function getProject(slug: string): Promise<Project | null> {
   try {
     const response = await cosmic.objects
       .findOne({
@@ -106,11 +112,12 @@ export async function getProject(slug: string) {
       })
       .props(['id', 'title', 'slug', 'metadata'])
       .depth(1);
-    return response.object;
+    return response.object as Project;
   } catch (error) {
     if (hasStatus(error) && error.status === 404) {
       return null;
     }
-    throw new Error('Failed to fetch project');
+    console.error('Failed to fetch project:', error);
+    return null;
   }
 }
